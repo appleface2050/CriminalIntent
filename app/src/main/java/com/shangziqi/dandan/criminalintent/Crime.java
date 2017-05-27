@@ -13,6 +13,10 @@ public class Crime {
     private Date mDate;
     private boolean mSolved;
 
+    public Crime() {
+        this.mDate = new Date();
+    }
+
     public UUID getId() {
         return mId;
     }
