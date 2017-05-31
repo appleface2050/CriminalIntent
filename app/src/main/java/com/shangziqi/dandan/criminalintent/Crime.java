@@ -13,6 +13,17 @@ public class Crime {
     private Date mDate;
     private boolean mSolved;
 
+    public int getRequiresPolice() {
+        return mRequiresPolice;
+    }
+
+    public void setRequiresPolice(int requiresPolice) {
+        mRequiresPolice = requiresPolice;
+    }
+
+    private int mRequiresPolice = 0;
+
+
     public Crime() {
         this.mDate = new Date();
     }
