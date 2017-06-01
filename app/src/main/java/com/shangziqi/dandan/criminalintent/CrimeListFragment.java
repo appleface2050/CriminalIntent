@@ -1,5 +1,6 @@
 package com.shangziqi.dandan.criminalintent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,15 +45,17 @@ public class CrimeListFragment extends Fragment {
         private TextView mTitleTextView;
         private TextView mDateTextView;
         private Crime mCrime;
+        private ImageView sSolvedImageView;
 
         public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_crime, parent, false));
             itemView.setOnClickListener(this);
             mTitleTextView = (TextView) itemView.findViewById(R.id.crime_title);
             mDateTextView = (TextView) itemView.findViewById(R.id.crime_date);
+            sSolvedImageView = (ImageView) itemView.findViewById(R.id.crime_solved);
         }
 
-        public CrimeHolder(View itemView){
+        public CrimeHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             mTitleTextView = (TextView) itemView.findViewById(R.id.crime_title);
@@ -59,15 +63,19 @@ public class CrimeListFragment extends Fragment {
         }
 
         public void bind(Crime crime) {
-            Log.d("crime","bind:"+crime.getTitle());
+            Log.d("crime", "bind:" + crime.getTitle());
             this.mCrime = crime;
             mTitleTextView.setText(this.mCrime.getTitle());
             mDateTextView.setText(this.mCrime.getDate().toString());
+            sSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);
         }
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(getActivity(), mCrime.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(), mCrime.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(getActivity(), CrimeActivity.class);
+            Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+            startActivity(intent);
         }
     }
 
@@ -76,7 +84,7 @@ public class CrimeListFragment extends Fragment {
         private List<Crime> mCrimes;
 
         @Override
-        public int getItemViewType(int position){
+        public int getItemViewType(int position) {
             Crime crime = mCrimes.get(position);
             return crime.getRequiresPolice();
         }
@@ -87,17 +95,17 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public CrimeHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-//            return new CrimeHolder(layoutInflater, parent);
-            Log.d("crime", String.valueOf(viewType));
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View view = null;
-            if (viewType != 0){
-                view = layoutInflater.inflate(R.layout.list_item_crime_need_police, parent, false);
-            }else{
-                view = layoutInflater.inflate(R.layout.list_item_crime, parent, false);
-            }
-            return new CrimeHolder(view);
+            return new CrimeHolder(layoutInflater, parent);
+//            Log.d("crime", String.valueOf(viewType));
+//            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+//            View view = null;
+//            if (viewType != 0) {
+//                view = layoutInflater.inflate(R.layout.list_item_crime, parent, false);
+//            } else {
+//                view = layoutInflater.inflate(R.layout.list_item_crime, parent, false);
+//            }
+//            return new CrimeHolder(view);
         }
 
         @Override
